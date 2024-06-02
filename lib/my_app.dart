@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tododb/view/splash_screen/splash_screen.dart';
+import 'package:tododb/view_mode/themes/light_theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,10 +17,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'ToDo',
           // You can use the library anywhere in the app even in theme
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-          ),
+          theme: lightTheme,
           home: child,
         );
       },
