@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tododb/translation/locale_keys.g.dart';
-import 'package:tododb/view/register/register_screen.dart';
 import 'package:tododb/view_mode/cubits/auth_cubit/auth_cubit.dart';
 import 'package:tododb/view_mode/utils/app_assets.dart';
 import 'package:tododb/view_mode/utils/app_colors.dart';
@@ -11,15 +10,15 @@ import 'package:tododb/view_mode/utils/navigation.dart';
 import 'package:tododb/view_mode/utils/snackbar.dart';
 import '../tasks/tasks_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Form(
-          key: AuthCubit.get(context).formKey,
+          key: AuthCubit.get(context).registerFormKey,
           child: ListView(
             padding: EdgeInsets.all(12.sp),
             children: [
@@ -33,7 +32,7 @@ class LoginScreen extends StatelessWidget {
               Align(
                 alignment: AlignmentDirectional.center,
                 child: Text(
-                  LocaleKeys.login.tr(),
+                  LocaleKeys.register.tr(),
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -88,40 +87,16 @@ class LoginScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 12.h),
-              Row(
-                children: [
-                  Text(
-                    LocaleKeys.doNotHaveAnAccount.tr(),
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColors.grey,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigation.push(context, const RegisterScreen());
-                    },
-                    child: Text(
-                      LocaleKeys.register.tr(),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(
                 height: 12.h,
               ),
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  if (state is LoginSuccessState) {
-                    SnackBarHelper.showMessage(context, 'Login Successfully');
+                  if (state is RegisterSuccessState) {
+                    SnackBarHelper.showMessage(
+                        context, LocaleKeys.registerSuccessfully.tr());
                     Navigation.pushAndRemove(context, const TasksScreen());
-                  } else if (state is LoginErrorState) {
+                  } else if (state is RegisterErrorState) {
                     SnackBarHelper.showError(context, state.msg);
                   }
                 },
@@ -129,35 +104,24 @@ class LoginScreen extends StatelessWidget {
                   return current is! ChangeHidePasswordState;
                 },
                 builder: (context, state) {
-                  if (state is LoginLoadingState) {
+                  if (state is RegisterLoadingState) {
                     return const CircularProgressIndicator.adaptive();
                   }
                   return ElevatedButton(
                     onPressed: () {
                       if (AuthCubit.get(context)
-                          .formKey
+                          .registerFormKey
                           .currentState!
                           .validate()) {
-                        AuthCubit.get(context).loginFirebase();
+                        AuthCubit.get(context).registerFirebase();
                       }
                     },
                     child: Text(
-                      LocaleKeys.login.tr(),
+                      LocaleKeys.register.tr(),
                       style: TextStyle(fontSize: 16.sp, color: AppColors.white),
                     ),
                   );
                 },
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              TextButton(
-                onPressed: () {
-                  AuthCubit.get(context).forgetPasswordFirebase();
-                },
-                child: Text(
-                  LocaleKeys.forgetPassword.tr(),
-                ),
               ),
             ],
           ),

@@ -15,7 +15,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
 
-  print("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
@@ -38,23 +37,18 @@ void main() async {
     sound: true,
   );
 
-  print('User granted permission: ${settings.authorizationStatus}');
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
     final player = AudioPlayer();
     final duration = await player.setAsset(AppAssets.error);
     player.play();
 
     if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification?.toMap().toString()}');
     }
   });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
 
   FirebaseMessaging.instance.onTokenRefresh
       .listen((fcmToken) {
