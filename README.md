@@ -64,10 +64,7 @@ flutter pub get
 flutter run
 
 
-```bash
-  npm install my-project
-  cd my-project
-```
+
     
 ## Dependencies
 This project uses the following Flutter packages:
