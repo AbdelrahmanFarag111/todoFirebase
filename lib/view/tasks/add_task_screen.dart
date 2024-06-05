@@ -15,7 +15,7 @@ class AddTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = TasksCubit.get(context)..clearData();
+    var cubit = TasksCubit.get(context);
     return Padding(
       padding:
       EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -88,7 +88,7 @@ class AddTaskScreen extends StatelessWidget {
                     firstDate: DateTime.now(),
                     lastDate: DateTime(DateTime.now().year + 10),
                   ).then((value) {
-                    cubit.startDateController.text = (value ?? DateTime.now()) as String;
+                    cubit.startDateController.text = (value ?? DateTime.now()).toString();
                   });
                 },
                 decoration: InputDecoration(
@@ -123,7 +123,7 @@ class AddTaskScreen extends StatelessWidget {
                     firstDate: DateTime.now(),
                     lastDate: DateTime(DateTime.now().year + 10),
                   ).then((value) {
-                    cubit.endDateController.text = (value ?? DateTime.now()) as String;
+                    cubit.endDateController.text = (value ?? DateTime.now()).toString();
                   });
                 },
                 validator: (value) {
@@ -209,6 +209,7 @@ class AddTaskScreen extends StatelessWidget {
                     final duration = await player.setAsset(AppAssets.yallaBena);
                     player.play();
                     cubit.addTaskFirebase().then((value) {
+                      cubit.clearData();
                       Navigator.pop(context);
                     });
                   }

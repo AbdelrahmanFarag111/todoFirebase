@@ -53,13 +53,6 @@ class TasksScreen extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.filter_list_rounded,
-                color: AppColors.white,
-              ),
-            ),
-            IconButton(
               onPressed: () {
                 SharedHelper.clearData();
                 Navigation.pushAndRemove(context, const LoginScreen());
@@ -140,7 +133,6 @@ class TasksScreen extends StatelessWidget {
             );
           },
         ),
-        drawer: const Drawer(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
@@ -150,7 +142,7 @@ class TasksScreen extends StatelessWidget {
               isScrollControlled: true,
               showDragHandle: true,
               builder: (context) {
-                return AddTaskScreen();
+                return const AddTaskScreen();
               },
             );
           },
